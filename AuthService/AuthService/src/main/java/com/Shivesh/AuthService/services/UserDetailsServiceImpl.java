@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.Shivesh.AuthService.dto.UserInfoDto;
 import com.Shivesh.AuthService.entities.UserInfo;
+import com.Shivesh.AuthService.eventProducer.UserInfoProducer;
 import com.Shivesh.AuthService.repo.UserInfoRepo;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	private final PasswordEncoder passwordEncoder ;
+	
+	@Autowired
+	private final UserInfoProducer userInfoProducer;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,6 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		}
 		String userId = UUID.randomUUID().toString();
 		userInfoRepo.save(new UserInfo(userId,userInfoDto.getUsername(),userInfoDto.getPassword(),new HashSet<>()));
+		userInfoProducer.sendEventToKafka(userInfoDto);
 		return true;
 	}
 
