@@ -19,6 +19,9 @@ public class UserInfoProducer {
 	@Value("${spring.kafka.topic.name}")
 	private String topicName;
 	
+	
+//	"hello ny namses sadjasbdjasbd"
+	
 	@Autowired
 	UserInfoProducer(KafkaTemplate<String, UserInfoDto> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;

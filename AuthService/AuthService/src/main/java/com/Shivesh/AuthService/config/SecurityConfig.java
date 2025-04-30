@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.Shivesh.AuthService.eventProducer.UserInfoProducer;
 import com.Shivesh.AuthService.repo.UserInfoRepo;
 import com.Shivesh.AuthService.services.UserDetailsServiceImpl;
 
@@ -34,9 +35,13 @@ public class SecurityConfig {
 	@Autowired
 	private final UserDetailsServiceImpl userDetailsServiceImpl;
 	
+	@Autowired
+    private final UserInfoProducer userInfoProducer;
+	
 	@Bean
+	@Autowired
 	public UserDetailsService userDetailsService(UserInfoRepo userInfoRepo,PasswordEncoder passwordEncoder) {
-		return new UserDetailsServiceImpl(userInfoRepo, passwordEncoder);
+		return new UserDetailsServiceImpl(userInfoRepo, passwordEncoder,userInfoProducer);
 	}
 	
 	@Bean
